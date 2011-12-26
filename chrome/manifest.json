@@ -9,9 +9,9 @@
     "name": "Post this page to Reading",
     "default_icon": "icon48.png"
   },
-  "content_scripts": [ {
+  "content_scripts": [{
     "js": ["content.js"],
-    "matches": ["http://*/*", "https://*/*"]
+    "matches": ["http://*/*"]//, "https://*/*"]
   }],
   "permissions": ["tabs", "http://*/*"]
 }
