@@ -36,5 +36,5 @@ chrome.extension.onRequest.addListener(
 
 if(document.referrer.indexOf(DOMAIN) > -1){
   // if we came from Reading, auto post
-  post(document.location.href, document.title);
+  submit(document.location.href, document.title);
 }
