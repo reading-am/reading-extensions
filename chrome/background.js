@@ -1,13 +1,18 @@
-var pageSearch = function(info, tab){
-    sort_order = sortOrder();
-    open_url("http://" + SERVER + "/search/?pluginver=chrome-" + CHROME_VERSION +  sort_order + "&url=" + encodeURIComponent(info.srcUrl));
-};
+var self = this;
+    post = function(url){
+      console.log(url);
+    },
+    post_page = function(info, tab){ post(info.pageUrl); },
+    post_link = function(info, tab){ post(info.linkUrl); },
+    post_image= function(info, tab){ post(info.srcUrl); },
+    post_video= function(info, tab){ post(info.srcUrl); },
+    post_audio= function(info, tab){ post(info.srcUrl); };
 
 var contexts = ["page","link","image","video","audio"];
 for(var i = 0; i < contexts.length; i++){
   var context = contexts[i],
       title = "Post " + context + " to Reading";
-  chrome.contextMenus.create({"title": title, "contexts": [context], "onclick": pageSearch});
+  chrome.contextMenus.create({"title": title, "contexts": [context], "onclick": self['post_'+context]});
 }
 
 chrome.browserAction.onClicked.addListener(function(tab){
