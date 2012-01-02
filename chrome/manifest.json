@@ -2,16 +2,21 @@
   "name": "Reading",
   "version": "1.0",
   "description": "What you're reading.",
-  "icons": { "16": "icon16.png",
-             "48": "icon48.png",
-             "128": "icon128.png" },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128":"icon128.png"
+  },
+  "background_page": "background.html",
+  "permissions": [
+    "contextMenus", "tabs", "http://*/*", "https://*/*"
+  ],
   "browser_action": {
     "name": "Post this page to Reading",
     "default_icon": "icon48.png"
   },
   "content_scripts": [{
     "js": ["content.js"],
-    "matches": ["http://*/*"]//, "https://*/*"]
-  }],
-  "permissions": ["tabs", "http://*/*"]
+    "matches": ["http://*/*"]
+  }]
 }
