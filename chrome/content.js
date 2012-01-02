@@ -1,4 +1,4 @@
-var DOMAIN = '0.0.0.0:3000',
+var DOMAIN = 'reading.am',
     head = document.getElementsByTagName('head')[0],
     loaded = false;
 
