@@ -33,7 +33,11 @@ chrome.extension.onRequest.addListener(
   }
 );
 
-if(document.location.href.indexOf(DOMAIN) == -1 && document.referrer.indexOf(DOMAIN) > -1){
-  // if we came from Reading, auto post
+if(document.location.href.indexOf(DOMAIN) == -1 &&
+   document.referrer.indexOf(DOMAIN) > -1 &&
+   window.location.protocol != "https:"
+  ){
+  // if we came from Reading, auto post but not if
+  // it's an https page because they'll get an ugly warning
   submit(document.location.href, document.title);
 }
