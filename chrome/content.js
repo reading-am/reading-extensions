@@ -33,7 +33,7 @@ chrome.extension.onRequest.addListener(
   }
 );
 
-if(document.referrer.indexOf(DOMAIN) > -1){
+if(document.location.href.indexOf(DOMAIN) == -1 && document.referrer.indexOf(DOMAIN) > -1){
   // if we came from Reading, auto post
   submit(document.location.href, document.title);
 }
