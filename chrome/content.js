@@ -14,18 +14,22 @@ var load = function(){
   return true;
 };
 
-var post = function(url, title){
+var submit = function(url, title){
   if(!loaded) loaded = load();
   var script = document.createElement('script'),
       title = title ? '"'+title+'"' : 'null';
-  script.appendChild(document.createTextNode('reading.post("'+url+'", '+title+')'));
+  script.appendChild(document.createTextNode(
+    'var r_submit = function(){ reading.submit({url:"'+url+'", title:'+title+'}) };'+
+    'if(reading.ready) r_submit();'+
+    'else document.addEventListener("reading.ready", r_submit);'
+  ));
   head.appendChild(script);
   console.log(url, title);
 };
 
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse){
-    post(request.url, request.title);
+    submit(request.url, request.title);
     sendResponse({}); // close the connection
   }
 );
