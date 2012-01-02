@@ -24,7 +24,6 @@ var submit = function(url, title){
     'else document.addEventListener("reading.ready", r_submit);'
   ));
   head.appendChild(script);
-  console.log(url, title);
 };
 
 chrome.extension.onRequest.addListener(
