@@ -1,15 +1,12 @@
 var self = this;
-    post = function(url, tab){
-      console.log(url);
-      chrome.tabs.executeScript(tab.id, {file: "action.js"}, function(){
-        chrome.tabs.sendRequest(tab.id, {url: url});
-      });
+    post = function(id, url, title){
+      chrome.tabs.sendRequest(id, {url: url, title: title});
     },
-    post_page = function(info, tab){ post(info.pageUrl, tab); },
-    post_link = function(info, tab){ post(info.linkUrl, tab); },
-    post_image= function(info, tab){ post(info.srcUrl, tab); },
-    post_video= function(info, tab){ post(info.srcUrl, tab); },
-    post_audio= function(info, tab){ post(info.srcUrl, tab); };
+    post_page = function(info, tab){ post(tab.id, tab.url, tab.title); },
+    post_link = function(info, tab){ post(tab.id, info.linkUrl); },
+    post_image= function(info, tab){ post(tab.id, info.srcUrl); },
+    post_video= function(info, tab){ post(tab.id, info.srcUrl); },
+    post_audio= function(info, tab){ post(tab.id, info.srcUrl); };
 
 var contexts = ["page","link","image","video","audio"];
 for(var i = 0; i < contexts.length; i++){
@@ -19,12 +16,5 @@ for(var i = 0; i < contexts.length; i++){
 }
 
 chrome.browserAction.onClicked.addListener(function(tab){
-  chrome.tabs.executeScript(tab.id, {file: "action.js"});
+  post(tab.id, tab.url, tab.title);
 });
-
-// This is currently handled in the content script manifest option
-// chrome.tabs.onUpdated.addListener(function(tabId , info){
-  // if(info.status == "complete"){
-    // chrome.tabs.executeScript(null, {file:"content.js"});
-  // }
-// });
