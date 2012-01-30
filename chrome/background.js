@@ -1,12 +1,17 @@
 var self = this;
-    submit = function(id, url, title){
+    submit = function(type, via, id, url, title){
+      track(via+'_'+type);
       chrome.tabs.sendRequest(id, {url: url, title: title});
     },
-    submit_page = function(info, tab){ submit(tab.id, tab.url, tab.title); },
-    submit_link = function(info, tab){ submit(tab.id, info.linkUrl); },
-    submit_image= function(info, tab){ submit(tab.id, info.srcUrl); },
-    submit_video= function(info, tab){ submit(tab.id, info.srcUrl); },
-    submit_audio= function(info, tab){ submit(tab.id, info.srcUrl); };
+    track = function(button, event){
+      if(!event) event = 'clicked';
+      _gaq.push(['_trackEvent', button, event]);
+    },
+    submit_page = function(info, tab){ submit('page',  'contextMenu', tab.id, tab.url, tab.title); },
+    submit_link = function(info, tab){ submit('link',  'contextMenu', tab.id, info.linkUrl); },
+    submit_image= function(info, tab){ submit('image', 'contextMenu', tab.id, info.srcUrl); },
+    submit_video= function(info, tab){ submit('video', 'contextMenu', tab.id, info.srcUrl); },
+    submit_audio= function(info, tab){ submit('audio', 'contextMenu', tab.id, info.srcUrl); };
 
 var contexts = ["page","link","image","video","audio"];
 for(var i = 0; i < contexts.length; i++){
@@ -16,5 +21,5 @@ for(var i = 0; i < contexts.length; i++){
 }
 
 chrome.browserAction.onClicked.addListener(function(tab){
-  submit(tab.id, tab.url, tab.title);
+  submit('page', 'browserAction', tab.id, tab.url, tab.title);
 });

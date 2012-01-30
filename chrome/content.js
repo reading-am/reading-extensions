@@ -1,4 +1,5 @@
 var DOMAIN = 'reading.am',
+    VERSION = '1.1.0',
     head = document.getElementsByTagName('head')[0],
     loaded = false;
 
@@ -6,8 +7,8 @@ var load = function(){
   var vars = document.createElement('script'),
       script = document.createElement('script');
 
-  vars.appendChild(document.createTextNode('var reading = {platform: "chrome"};'));
-  script.src="http://"+DOMAIN+"/assets/bookmarklet/loader.js";
+  vars.appendChild(document.createTextNode('var reading = {platform:"chrome",version:"'+VERSION+'"};'));
+  script.src="https://"+DOMAIN+"/assets/bookmarklet/loader.js";
 
   head.appendChild(vars);
   head.appendChild(script);
@@ -34,10 +35,8 @@ chrome.extension.onRequest.addListener(
 );
 
 if(document.location.href.indexOf(DOMAIN) == -1 &&
-   document.referrer.indexOf(DOMAIN) > -1 &&
-   window.location.protocol != "https:"
+   document.referrer.indexOf(DOMAIN) > -1
   ){
-  // if we came from Reading, auto post but not if
-  // it's an https page because they'll get an ugly warning
+  // if we came from Reading, auto post
   submit(document.location.href, document.title);
 }
