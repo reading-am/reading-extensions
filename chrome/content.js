@@ -1,5 +1,6 @@
 var DOMAIN = 'reading.am',
-    VERSION = '1.1.0',
+    PROTOCOL = 'https',
+    VERSION = '1.1.1',
     head = document.getElementsByTagName('head')[0],
     loaded = false;
 
@@ -8,7 +9,7 @@ var load = function(){
       script = document.createElement('script');
 
   vars.appendChild(document.createTextNode('var reading = {platform:"chrome",version:"'+VERSION+'"};'));
-  script.src="https://"+DOMAIN+"/assets/bookmarklet/loader.js";
+  script.src = PROTOCOL+"://"+DOMAIN+"/assets/bookmarklet/loader.js";
 
   head.appendChild(vars);
   head.appendChild(script);
@@ -34,8 +35,17 @@ chrome.extension.onRequest.addListener(
   }
 );
 
-if(document.location.href.indexOf(DOMAIN) == -1 &&
-   document.referrer.indexOf(DOMAIN) > -1
+var loc = document.location.href,
+    ref = document.referrer;
+if(
+  // don't post while still on Reading
+  loc.indexOf(DOMAIN) == -1
+  // don't post on oauth pages
+  && loc.indexOf('/oauth/') == -1
+  // account for http and https
+  && (ref.indexOf(DOMAIN) == 7 || ref.indexOf(DOMAIN) == 8)
+  // exclude auth and settings sections
+  && ref.indexOf('/auth') == -1 && ref.indexOf('/hooks') == -1 && ref.indexOf('/info') == -1 && ref.indexOf('/extras') == -1
   ){
   // if we came from Reading, auto post
   submit(document.location.href, document.title);
