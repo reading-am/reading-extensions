@@ -1,7 +1,7 @@
 var self = this;
     submit = function(type, via, id, url, title){
       track(via+'_'+type);
-      chrome.tabs.sendRequest(id, {url: url, title: title});
+      chrome.tabs.sendRequest(id, {func: 'submit', url: url, title: title});
     },
     track = function(button, event){
       if(!event) event = 'clicked';
