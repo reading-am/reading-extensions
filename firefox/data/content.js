@@ -8,7 +8,7 @@ var DOMAIN = '0.0.0.0:3000',
     PLATFORM = (typeof chrome !== 'undefined' ? 'chrome' : 'firefox'),
     head = document.getElementsByTagName('head')[0],
     loaded = false,
-    _this = this;
+    _this = this; // "self" is reserved in firefox
 
 var load = function(){
   var vars = document.createElement('script'),
@@ -61,7 +61,9 @@ switch(PLATFORM){
     );
     break;
   case 'firefox':
-    self.on('message', function(request){ _this[request.func](request); });
+    self.on('message', function(request){
+      _this[request.func](request);
+    });
     break;
 }
 
