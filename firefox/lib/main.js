@@ -1,37 +1,79 @@
-const widgets = require("widget");
-const tabs    = require("tabs");
-const data    = require("self").data;
-
-var widget = widgets.Widget({
-  id: "reading-link",
-  label: "Reading",
-  contentURL: data.url("icon16.png"),
-  onClick: function() {
-    tabs.open("https://reading.am");
-  }
-});
-
+//-------//
+// Setup //
+//-------//
+var widgets = require("widget");
+var tabs    = require("tabs");
+var data    = require("self").data;
 // from: file:///Users/leppert/dev/addon-sdk-1.5/doc/packages/addon-kit/docs/page-mod.html#include
 var workers = [];
-function detachWorker(worker, workerArray){
+var detachWorker = function(worker, workerArray){
   var index = workerArray.indexOf(worker);
   if(index != -1) {
     workerArray.splice(index, 1);
   }
-}
+};
 
-const pageMod = require("page-mod");
+//---------------------//
+// Insert on Page Load //
+//---------------------//
+var pageMod = require("page-mod");
 pageMod.PageMod({
   include: ["http://*", "https://*"],
   contentScriptWhen: 'ready',
   contentScriptFile: data.url("content.js"),
   onAttach: function(worker){
-    worker.postMessage({func:'submit', url:'http://example.com', title:'Example'});
     workers.push(worker);
-    worker.on('detach', function () {
+    worker.on('detach', function(){
       detachWorker(this, workers);
     });
   }
 });
+
+//-------------------//
+// Submit to Reading //
+//-------------------//
+var submit = function(url){
+  var worker = workers[0];
+      message = {func:'submit'};
+  if(url){
+    message.url = url;
+  } else {
+    message.url   = worker.tab.url;
+    message.title = worker.tab.title;
+  }
+  worker.postMessage(message);
+};
+
+//--------------------//
+// Main Plugin Button //
+//--------------------//
+var widget = widgets.Widget({
+  id: "reading-link",
+  label: "Reading",
+  contentURL: data.url("icon16.png"),
+  onClick: submit
+});
+
+//---------------//
+// Context Menus //
+//---------------//
+var cm = require("context-menu");
+var contexts = [
+  {name:"page",  sel:false},
+  {name:"link",  sel:"a"},
+  {name:"image", sel:"img"}
+];
+for(var i = 0; i < contexts.length; i++){
+  var item = {
+    label: "Post " + contexts[i].name + " to Reading",
+    image: data.url("icon16.png"),
+    contentScript: 'self.on("click", function(node, data){' +
+                   '  self.postMessage(node);' +
+                   '});',
+    onMessage: submit
+  };
+  if(contexts[i].sel) item.context = cm.SelectorContext(contexts[i].sel);
+  cm.Item(item);
+}
 
 console.log("The add-on is running.");
