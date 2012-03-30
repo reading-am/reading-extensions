@@ -35,7 +35,7 @@ pageMod.PageMod({
 var submit = function(url){
   var worker = workers[0];
       message = {func:'submit'};
-  if(url){
+  if(url instanceof String){
     message.url = url;
   } else {
     message.url   = worker.tab.url;
@@ -48,7 +48,7 @@ var submit = function(url){
 // Main Plugin Button //
 //--------------------//
 var widget = widgets.Widget({
-  id: "reading-link",
+  id: "reading",
   label: "Reading",
   contentURL: data.url("icon16.png"),
   onClick: submit
