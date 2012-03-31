@@ -29,15 +29,17 @@ chrome.browserAction.onClicked.addListener(function(tab){
 //---------------//
 // Context Menus //
 //---------------//
-var submit_page = function(info, tab){ submit('page',  'contextMenu', tab.id, tab.url, tab.title); },
-    submit_link = function(info, tab){ submit('link',  'contextMenu', tab.id, info.linkUrl); },
-    submit_image= function(info, tab){ submit('image', 'contextMenu', tab.id, info.srcUrl); },
-    submit_video= function(info, tab){ submit('video', 'contextMenu', tab.id, info.srcUrl); },
-    submit_audio= function(info, tab){ submit('audio', 'contextMenu', tab.id, info.srcUrl); };
-
-var contexts = ["page","link","image","video","audio"];
+var contexts = [
+  {type: "page",  func: function(info, tab){ submit('page',  'contextMenu', tab.id, tab.url, tab.title); }},
+  {type: "link",  func: function(info, tab){ submit('link',  'contextMenu', tab.id, info.linkUrl); }},
+  {type: "image", func: function(info, tab){ submit('image', 'contextMenu', tab.id, info.srcUrl); }},
+  {type: "video", func: function(info, tab){ submit('video', 'contextMenu', tab.id, info.srcUrl); }},
+  {type: "audio", func: function(info, tab){ submit('audio', 'contextMenu', tab.id, info.srcUrl); }}
+];
 for(var i = 0; i < contexts.length; i++){
-  var context = contexts[i],
-      title = "Post " + context + " to Reading";
-  chrome.contextMenus.create({"title": title, "contexts": [context], "onclick": self['submit_'+context]});
+  chrome.contextMenus.create({
+    "title": "Post " + context[i].type + " to Reading",
+    "contexts": [context[i].type],
+    "onclick": context[i].func
+  });
 }
