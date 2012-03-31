@@ -58,18 +58,11 @@ pageMod.PageMod({
 //-------------------//
 // Submit to Reading //
 //-------------------//
-var submit = function(url){
-  console.log('MAIN:', 'submit', url);
-  var worker  = current_worker();
-      message = {func:'submit'};
-  if(url instanceof String){
-    message.url = url;
-  } else {
-    message.url   = worker[0].tab.url;
-    message.title = worker[0].tab.title;
-  }
+var submit = function(url, title){
+  console.log('MAIN:', 'submit', url, title);
+  var worker = current_worker();
   for(var i = 0; i < worker.length; i++){
-    worker[i].postMessage(message);
+    worker[i].postMessage({func: 'submit', url: url, title: title});
   }
 };
 
@@ -80,23 +73,27 @@ var widget = widgets.Widget({
   id: "reading",
   label: "Reading",
   contentURL: icon,
-  onClick: submit
+  onClick: function(){
+    submit(tabs.activeTab.url, tabs.activeTab.title);
+  }
 });
 
 //---------------//
 // Context Menus //
 //---------------//
 var contexts = [
-  {type: "page",  selector:false,     func: "node"},
+  {type: "page",  selector:false,     func: "document.location.href"},
   {type: "link",  selector:"a[href]", func: "node.href"},
   {type: "image", selector:"img",     func: "node.src"}
 ];
 for(var i = 0; i < contexts.length; i++){
   var item = {
-    label: "Post " + contexts[i].type + " to Reading",
+    label: "Post "+contexts[i].type+" to Reading",
     image: icon,
-    contentScript: 'self.on("click", function(node, data){ self.postMessage('+contexts[i].func+'); });',
-    onMessage: submit
+    onMessage: submit,
+    contentScript: 'self.on("click", function(node, data){' +
+                      'self.postMessage('+contexts[i].func+');' +
+                   '});'
   };
   if(contexts[i].selector) item.context = cm.SelectorContext(contexts[i].selector);
   cm.Item(item);
