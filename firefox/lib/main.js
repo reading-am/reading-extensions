@@ -82,17 +82,17 @@ var widget = widgets.Widget({
 // Context Menus //
 //---------------//
 var contexts = [
-  {type: "page",  selector:false,     func: "document.location.href"},
-  {type: "link",  selector:"a[href]", func: "node.href"},
-  {type: "image", selector:"img",     func: "node.src"}
+  {type: "page",  func: function(){ submit(tabs.activeTab.url, tabs.activeTab.title); }},
+  {type: "link",  prop: "node.href",  func: submit, selector:"a[href]"},
+  {type: "image", prop: "node.src",   func: submit, selector:"img"}
 ];
 for(var i = 0; i < contexts.length; i++){
   var item = {
     label: "Post "+contexts[i].type+" to Reading",
     image: icon,
-    onMessage: submit,
+    onMessage: contexts[i].func,
     contentScript: 'self.on("click", function(node, data){' +
-                      'self.postMessage('+contexts[i].func+');' +
+                      'self.postMessage(' + (contexts[i].prop ? contexts[i].prop : 'null') + ');' +
                    '});'
   };
   if(contexts[i].selector) item.context = cm.SelectorContext(contexts[i].selector);
