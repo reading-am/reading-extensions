@@ -1,31 +1,55 @@
 //-------//
 // Setup //
 //-------//
-var widgets = require("widget");
-var tabs    = require("tabs");
-var data    = require("self").data;
-// from: file:///Users/leppert/dev/addon-sdk-1.5/doc/packages/addon-kit/docs/page-mod.html#include
-var workers = [];
-var detachWorker = function(worker, workerArray){
-  var index = workerArray.indexOf(worker);
-  if(index != -1) {
-    workerArray.splice(index, 1);
-  }
-};
+// system
+var widgets = require("widget"),
+    tabs    = require("tabs"),
+    data    = require("self").data,
+    cm      = require("context-menu"),
+    pageMod = require("page-mod");
+// tracking
+var workers = [],
+    tabbers = [],
+    current_worker = function(){ return workers[tabbers.indexOf(tabs.activeTab)]; };
 
 //---------------------//
 // Insert on Page Load //
 //---------------------//
-var pageMod = require("page-mod");
+// equivalent to Chrome's manifest.json ruels
 pageMod.PageMod({
   include: ["http://*", "https://*"],
   contentScriptWhen: 'ready',
   contentScriptFile: data.url("content.js"),
   onAttach: function(worker){
-    workers.push(worker);
-    worker.on('detach', function(){
-      detachWorker(this, workers);
-    });
+    // check that you're not in an iframe
+    if(worker.url == worker.tab.url){
+      // add to list
+      var existing = tabbers.indexOf(worker.tab);
+      if(existing > -1){
+        // NOTE - some pages register the same load twice.
+        // We save and call both workers but only one will truly submit
+        if(worker.url == workers[existing][0].url){
+          console.log("duplicate", existing);
+          workers[existing].push(worker);
+        } else {
+          console.log("attach to", existing);
+          workers[existing] = [worker];
+        }
+      } else {
+        console.log("attach new", tabbers.length);
+        workers.push([worker]);
+        tabbers.push(worker.tab);
+      }
+      // cleanup on close
+      worker.tab.on("close", function(tab){
+        var index = tabbers.indexOf(tab);
+        if(index > -1){
+          console.log("close", index);
+          tabbers.splice(index, 1);
+          workers.splice(index, 1);
+        }
+      });
+    }
   }
 });
 
@@ -33,15 +57,17 @@ pageMod.PageMod({
 // Submit to Reading //
 //-------------------//
 var submit = function(url){
-  var worker = workers[0];
+  var worker  = current_worker();
       message = {func:'submit'};
   if(url instanceof String){
     message.url = url;
   } else {
-    message.url   = worker.tab.url;
-    message.title = worker.tab.title;
+    message.url   = worker[0].tab.url;
+    message.title = worker[0].tab.title;
   }
-  worker.postMessage(message);
+  for(var i=0; i<worker.length; i++){
+    worker[i].postMessage(message);
+  }
 };
 
 //--------------------//
@@ -57,7 +83,6 @@ var widget = widgets.Widget({
 //---------------//
 // Context Menus //
 //---------------//
-var cm = require("context-menu");
 var contexts = [
   {name:"page",  sel:false},
   {name:"link",  sel:"a"},
@@ -75,5 +100,3 @@ for(var i = 0; i < contexts.length; i++){
   if(contexts[i].sel) item.context = cm.SelectorContext(contexts[i].sel);
   cm.Item(item);
 }
-
-console.log("The add-on is running.");

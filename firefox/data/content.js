@@ -45,7 +45,7 @@ if(
   // account for http and https
   && (ref.indexOf(DOMAIN) == 7 || ref.indexOf(DOMAIN) == 8)
   // exclude auth and settings sections
-  && ref.indexOf('/auth') == -1 && ref.indexOf('/hooks') == -1 && ref.indexOf('/info') == -1 && ref.indexOf('/extras') == -1
+  && ref.indexOf('/settings') == -1
   ){
   // if we came from Reading, auto post
   submit({url: document.location.href, title: document.title});
@@ -66,7 +66,5 @@ switch(PLATFORM){
     });
     break;
 }
-
-console.log('running');
 
 } } catch(err){ } // end frame check
