@@ -12,7 +12,7 @@ var workers = [],
     tabbers = [],
     current_worker = function(){ return workers[tabbers.indexOf(tabs.activeTab)]; };
 // misc
-var icon = data.url("icon16.png");
+var icon = data.url('shared/icon16.png');
 
 //---------------------//
 // Insert on Page Load //
@@ -21,7 +21,7 @@ var icon = data.url("icon16.png");
 pageMod.PageMod({
   include: ["http://*", "https://*"],
   contentScriptWhen: 'ready',
-  contentScriptFile: data.url("content.js"),
+  contentScriptFile: data.url('shared/content.js'),
   onAttach: function(worker){
     // check that you're not in an iframe
     if(worker.url == worker.tab.url){
