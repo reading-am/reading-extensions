@@ -15,14 +15,39 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.1.2</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>1.1.2</string>
 	<key>Chrome</key>
 	<dict>
-		<key>Bars</key>
+		<key>Context Menu Items</key>
 		<array>
 			<dict>
+				<key>Identifier</key>
+				<string>link</string>
+				<key>Title</key>
+				<string>Post link to Reading</string>
+			</dict>
+			<dict>
+				<key>Identifier</key>
+				<string>image</string>
+				<key>Title</key>
+				<string>Post image to Reading</string>
+			</dict>
+		</array>
+		<key>Toolbar Items</key>
+		<array>
+			<dict>
+				<key>Command</key>
+				<string>message()</string>
+				<key>Identifier</key>
+				<string>reading</string>
+				<key>Image</key>
+				<string>Icon-Toolbar.png</string>
 				<key>Label</key>
 				<string>Reading</string>
+				<key>Palette Label</key>
+				<string>Reading</string>
+				<key>Tool Tip</key>
+				<string>Post this page to Reading</string>
 			</dict>
 		</array>
 	</dict>
@@ -30,9 +55,9 @@
 	<dict>
 		<key>Scripts</key>
 		<dict>
-			<key>Start</key>
+			<key>End</key>
 			<array>
-				<string></string>
+				<string>shared/content.js</string>
 			</array>
 		</dict>
 	</dict>
@@ -50,6 +75,8 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>https://reading.am/safari</string>
 	<key>Website</key>
 	<string>https://reading.am</string>
 </dict>
