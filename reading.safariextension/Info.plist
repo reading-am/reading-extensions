@@ -24,7 +24,7 @@
 		<array>
 			<dict>
 				<key>Command</key>
-				<string>submit</string>
+				<string>page</string>
 				<key>Identifier</key>
 				<string>browser_action</string>
 				<key>Image</key>

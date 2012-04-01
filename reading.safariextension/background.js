@@ -1,17 +1,45 @@
 // dispatch
 var handle_command = function(event){
   console.log('command', event);
-  safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(event.command, {url:'http://example.com'});
+
+  if(event.command == 'page'){
+    var message = {
+      url: safari.application.activeBrowserWindow.activeTab.url,
+      title: safari.application.activeBrowserWindow.activeTab.title
+    };
+  } else {
+    var message = click_info[event.command];
+  };
+
+  safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('submit', message);
 };
 
 // validate
 var handle_validate = function(event){
 };
 
+//---------------//
+// Context Menus //
+//---------------//
+var contexts = [
+      {type: "page"},
+      {type: "link",  selector:"a"},
+      {type: "image", selector:"img"}
+    ],
+    click_info = {};
 var handle_cm = function(event){
   console.log('open cm', event);
-  if (event.userInfo === "IMG") {
-    event.contextMenu.appendContextMenuItem("enlarge", "Post image to Reading");
+  for(var i = 0; i < event.userInfo.length; i++){
+    for(var j = 0; j < contexts.length; j++){
+      if(event.userInfo[i].name == contexts[j].selector){
+        click_info[contexts[j].type] = {url: event.userInfo[i].url};
+        event.contextMenu.appendContextMenuItem(contexts[j].type, "* Post "+contexts[j].type+" to Reading");
+      }
+    }
+  }
+  // if none of the selectors match, show "read page" context
+  if(!event.contextMenu.contextMenuItems.length){
+    event.contextMenu.appendContextMenuItem(contexts[0].type, "* Post "+contexts[0].type+" to Reading");
   }
 };
 
