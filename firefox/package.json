@@ -1,9 +1,8 @@
 {
-  "name": "reading",
-  "license": "MPL",
-  "author": "Greg Leppert",
-  "version": "0.1",
+  "id":       "reading",
+  "name":     "reading",
+  "version":  "1.1.2",
+  "author":   "Greg Leppert",
   "fullName": "Reading",
-  "id": "reading",
   "description": "Share what you're reading. Not what you like. Not what you find interesting. Just what you're reading."
 }
