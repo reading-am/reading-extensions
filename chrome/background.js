@@ -38,8 +38,8 @@ var contexts = [
 ];
 for(var i = 0; i < contexts.length; i++){
   chrome.contextMenus.create({
-    "title": "Post " + context[i].type + " to Reading",
-    "contexts": [context[i].type],
-    "onclick": context[i].func
+    "title": "Post " + contexts[i].type + " to Reading",
+    "contexts": [contexts[i].type],
+    "onclick": contexts[i].func
   });
 }
