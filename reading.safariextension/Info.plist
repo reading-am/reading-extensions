@@ -39,7 +39,7 @@
 		<array>
 			<dict>
 				<key>Command</key>
-				<string>click</string>
+				<string>submit</string>
 				<key>Identifier</key>
 				<string>browser_action</string>
 				<key>Image</key>
