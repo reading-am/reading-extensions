@@ -1,7 +1,7 @@
 {
   "name": "Reading",
   "version": "1.1.1",
-  "description": "What you're reading. Not what you like. Not what you find interesting. Just what you're reading.",
+  "description": "Share what you're reading. Not what you like. Not what you find interesting. Just what you're reading.",
   "icons": {
     "16": "shared/icon16.png",
     "48": "shared/icon48.png",
