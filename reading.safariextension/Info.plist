@@ -33,15 +33,19 @@
 				<string>Post image to Reading</string>
 			</dict>
 		</array>
+		<key>Global Page</key>
+		<string>shared/background.html</string>
 		<key>Toolbar Items</key>
 		<array>
 			<dict>
 				<key>Command</key>
-				<string>message()</string>
+				<string>click</string>
 				<key>Identifier</key>
-				<string>reading</string>
+				<string>browser_action</string>
 				<key>Image</key>
 				<string>Icon-Toolbar.png</string>
+				<key>Include By Default</key>
+				<true/>
 				<key>Label</key>
 				<string>Reading</string>
 				<key>Palette Label</key>

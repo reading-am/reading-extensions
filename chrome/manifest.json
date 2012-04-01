@@ -7,7 +7,7 @@
     "48": "shared/icon48.png",
     "128":"shared/icon128.png"
   },
-  "background_page": "background.html",
+  "background_page": "shared/background.html",
   "permissions": [
     "contextMenus", "tabs", "http://*/*", "https://*/*"
   ],
