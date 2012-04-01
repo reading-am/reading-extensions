@@ -17,7 +17,7 @@ var icon = data.url('shared/icon16.png');
 //---------------------//
 // Insert on Page Load //
 //---------------------//
-// equivalent to Chrome's manifest.json ruels
+// equivalent to Chrome's manifest.json rules
 pageMod.PageMod({
   include: ["http://*", "https://*"],
   contentScriptWhen: 'ready',
