@@ -1,6 +1,6 @@
 {
-  "id":       "reading-am",
-  "name":     "reading-am",
+  "id":       "reading",
+  "name":     "reading",
   "version":  "1.1.2",
   "author":   "Greg Leppert",
   "fullName": "Reading.am",
