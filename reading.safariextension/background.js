@@ -2,7 +2,6 @@
 // Setup //
 //-------//
 var handle_command = function(event){
-  console.log('command', event);
   if(event.target instanceof SafariExtensionToolbarItem){
     main_button();
   } else {
@@ -36,25 +35,28 @@ var main_button = function(){
 //---------------//
 // Context Menus //
 //---------------//
+var click_info = {};
+var add_cm = function(event, type, data){
+  click_info[type] = data;
+  event.contextMenu.appendContextMenuItem(type, "Post "+type+" to Reading");
+};
+
 var contexts = [
-      {type: "page",  func: function(){ submit('page', 'contextMenu', safari.application.activeBrowserWindow.activeTab.url, safari.application.activeBrowserWindow.activeTab.title); }},
-      {type: "link",  selector:"a",   func: function(){ submit('link',  'contextMenu', click_info.link.url); }},
-      {type: "image", selector:"img", func: function(){ submit('image', 'contextMenu', click_info.image.url); }}
-    ],
-    click_info = {};
+  {type: "page",  func: function(){ submit('page', 'contextMenu', safari.application.activeBrowserWindow.activeTab.url, safari.application.activeBrowserWindow.activeTab.title); }},
+  {type: "link",  selector:"a",   func: function(){ submit('link',  'contextMenu', click_info.link.url); }},
+  {type: "image", selector:"img", func: function(){ submit('image', 'contextMenu', click_info.image.url); }}
+];
 var handle_cm = function(event){
-  console.log('open cm', event);
   for(var i = 0; i < event.userInfo.length; i++){
     for(var j = 0; j < contexts.length; j++){
       if(event.userInfo[i].name == contexts[j].selector){
-        click_info[contexts[j].type] = {url: event.userInfo[i].url, onclick: contexts[j].func};
-        event.contextMenu.appendContextMenuItem(contexts[j].type, "Post "+contexts[j].type+" to Reading");
+        add_cm(event, contexts[j].type, {url: event.userInfo[i].url, onclick: contexts[j].func});
       }
     }
   }
   // if none of the selectors match, show "read page" context
   if(!event.contextMenu.contextMenuItems.length){
-    event.contextMenu.appendContextMenuItem(contexts[0].type, "Post "+contexts[0].type+" to Reading");
+    add_cm(event, contexts[0].type, {onclick: contexts[0].func});
   }
 };
 
