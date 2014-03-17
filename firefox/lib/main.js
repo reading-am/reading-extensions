@@ -102,8 +102,8 @@ for(var i = 0; i < contexts.length; i++){
 //------------//
 // CSP Bypass //
 //------------//
-// NOTE - THIS WILL NOT WORK WHEN TESTING WITH cfx run ON THE COMMAND LINE
-// it only works when you actually export an XPI and install it
+// NOTE - The modified headers usually don't show up in the inspector or Firebug.
+// If I had to take a guess, it depends on whose observer gets fired first.
 //
 // https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/platform_xpcom
 // http://stackoverflow.com/a/1777834/313561
