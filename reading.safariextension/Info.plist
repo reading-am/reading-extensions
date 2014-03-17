@@ -65,8 +65,8 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>https://reading.am/extensions/safari/update</string>
+	<string>https://www.reading.am/extensions/safari/update</string>
 	<key>Website</key>
-	<string>https://reading.am</string>
+	<string>https://www.reading.am</string>
 </dict>
 </plist>
