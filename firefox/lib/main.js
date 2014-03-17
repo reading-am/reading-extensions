@@ -2,11 +2,11 @@
 // Setup //
 //-------//
 // system
-var widgets = require("widget"),
-    tabs    = require("tabs"),
-    data    = require("self").data,
-    cm      = require("context-menu"),
-    pageMod = require("page-mod");
+var widgets = require("sdk/widget"),
+    tabs    = require("sdk/tabs"),
+    data    = require("sdk/self").data,
+    cm      = require("sdk/context-menu"),
+    pageMod = require("sdk/page-mod");
 // tracking
 var workers = [],
     tabbers = [],
@@ -98,3 +98,32 @@ for(var i = 0; i < contexts.length; i++){
   if(contexts[i].selector) item.context = cm.SelectorContext(contexts[i].selector);
   cm.Item(item);
 }
+
+// https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/platform_xpcom
+// http://stackoverflow.com/a/1777834/313561
+// http://stackoverflow.com/a/19917664/313561
+const {Cc,Ci} = require("chrome");
+var {CSP} = require("./csp");
+
+var modify_header = function(channel, header){
+  var csp = channel.getResponseHeader(header);
+  channel.setResponseHeader(header, CSP.inject(csp), false);
+};
+
+Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService).addObserver({
+  observe : function(subject, topic, data) {
+    var channel = subject.QueryInterface(Ci.nsIHttpChannel);
+    if (channel.responseStatus !== 200) return;
+    channel.setResponseHeader("ETag", "wooooop", false);
+    // There is no clean way to check the presence of csp header. an exception
+    // will be thrown if it is not there.
+    // https://developer.mozilla.org/en-US/docs/XPCOM_Interface_Reference/nsIHttpChannel
+    try { modify_header(channel, "Content-Security-Policy"); } catch (e) {
+      try { modify_header(channel, "X-Content-Security-Policy"); } catch (e) {
+        try { modify_header(channel, "X-WebKit-CSP"); } catch (e) {
+          return; // no headers found
+        }
+      }
+    }
+  }
+},"http-on-examine-response", false);

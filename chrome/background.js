@@ -50,10 +50,15 @@ for(var i = 0; i < contexts.length; i++){
 // CSP Bypass //
 //------------//
 // https://www.planbox.com/blog/development/coding/bypassing-githubs-content-security-policy-chrome-extension.html
+var isCSPHeader = function(name) {
+  name = name.toLowerCase();
+  return (name == 'content-security-policy') || (name == 'x-webkit-csp');
+};
+
 chrome.webRequest.onHeadersReceived.addListener(function(details) {
   for (i = 0; i < details.responseHeaders.length; i++) {
 
-    if (isCSPHeader(details.responseHeaders[i].name.toUpperCase())) {
+    if (isCSPHeader(details.responseHeaders[i].name) {
       var csp = details.responseHeaders[i].value,
           defsrcs = ['http://*.'+ROOT_DOMAIN, 'https://*.'+ROOT_DOMAIN],
           // via: https://developer.mozilla.org/en-US/docs/Security/CSP/CSP_policy_directives
@@ -94,7 +99,3 @@ chrome.webRequest.onHeadersReceived.addListener(function(details) {
   urls: ["http://*/*", "https://*/*"],
   types: ["main_frame"]
 }, ["blocking", "responseHeaders"]);
-
-function isCSPHeader(headerName) {
-  return (headerName == 'CONTENT-SECURITY-POLICY') || (headerName == 'X-WEBKIT-CSP');
-}
