@@ -109,6 +109,8 @@ for(var i = 0; i < contexts.length; i++){
 // http://stackoverflow.com/a/1777834/313561
 // http://stackoverflow.com/a/19917664/313561
 const {Cc,Ci} = require("chrome");
+// FYI this is symlinked to the folder because FF won't let you require()
+// files that aren't in ./lib
 var {CSP} = require("./csp");
 
 var modify_header = function(channel, header){

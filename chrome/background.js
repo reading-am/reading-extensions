@@ -52,7 +52,7 @@ for(var i = 0; i < contexts.length; i++){
 // https://www.planbox.com/blog/development/coding/bypassing-githubs-content-security-policy-chrome-extension.html
 var isCSPHeader = function(name) {
   name = name.toLowerCase();
-  return (name == 'content-security-policy') || (name == 'x-webkit-csp');
+  return (name == 'content-security-policy') || (name == 'x-content-security-policy') || (name == 'x-webkit-csp');
 };
 
 chrome.webRequest.onHeadersReceived.addListener(function(details) {
