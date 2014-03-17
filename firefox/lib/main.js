@@ -99,11 +99,15 @@ for(var i = 0; i < contexts.length; i++){
   cm.Item(item);
 }
 
+//------------//
+// CSP Bypass //
+//------------//
+// NOTE - THIS WILL NOT WORK WHEN TESTING WITH cfx run ON THE COMMAND LINE
+// it only works when you actually export an XPI and install it
+//
 // https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/platform_xpcom
 // http://stackoverflow.com/a/1777834/313561
 // http://stackoverflow.com/a/19917664/313561
-// NOTE - THIS WILL NOT WORK WHEN TESTING WITH cfx run ON THE COMMAND LINE
-// it only works when you actually export an XPI and install it
 const {Cc,Ci} = require("chrome");
 var {CSP} = require("./csp");
 
