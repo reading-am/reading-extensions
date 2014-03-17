@@ -102,6 +102,8 @@ for(var i = 0; i < contexts.length; i++){
 // https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/platform_xpcom
 // http://stackoverflow.com/a/1777834/313561
 // http://stackoverflow.com/a/19917664/313561
+// NOTE - THIS WILL NOT WORK WHEN TESTING WITH cfx run ON THE COMMAND LINE
+// it only works when you actually export an XPI and install it
 const {Cc,Ci} = require("chrome");
 var {CSP} = require("./csp");
 
@@ -114,7 +116,6 @@ Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService).addObser
   observe : function(subject, topic, data) {
     var channel = subject.QueryInterface(Ci.nsIHttpChannel);
     if (channel.responseStatus !== 200) return;
-    channel.setResponseHeader("ETag", "wooooop", false);
     // There is no clean way to check the presence of csp header. an exception
     // will be thrown if it is not there.
     // https://developer.mozilla.org/en-US/docs/XPCOM_Interface_Reference/nsIHttpChannel

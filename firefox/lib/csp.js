@@ -34,7 +34,13 @@ var CSP = exports.CSP = {
           'report-uri': defsrcs
         };
 
-    for (var key in directives) csp = csp.replace(key, key+" "+directives[key].join(" "));
+    for (var key in directives){
+      // Don't append if it's set to a wildcard,
+      // the browser will then ignore the wildcard
+      if(csp.indexOf(key+" *") == -1){
+        csp = csp.replace(key, key+" "+directives[key].join(" "));
+      }
+    }
     return csp;
   }
 };
