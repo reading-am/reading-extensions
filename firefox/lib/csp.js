@@ -1,6 +1,3 @@
-// Firefox uses CommonJS format, Chrome doesn't
-// if(typeof exports == "undefined") var exports = {};
-
 var ROOT_DOMAIN = 'reading.am';
 // uncomment for local testing
 // ROOT_DOMAIN = 'reading.dev:3000';
