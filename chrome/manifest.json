@@ -23,6 +23,11 @@
     "default_title": "Post this page to Reading",
     "default_icon": "shared/icon48.png"
   },
+  "applications": {
+    "gecko": {
+      "id": "reading.am@dinhe.net"
+    }
+  },
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "content_scripts": [{
     "js": ["shared/content.js"],
