@@ -50,7 +50,6 @@ for(var i = 0; i < contexts.length; i++){
 //------------//
 // CSP Bypass //
 //------------//
-// https://www.planbox.com/blog/development/coding/bypassing-githubs-content-security-policy-browser-extension.html
 browser.webRequest.onHeadersReceived.addListener(function(details) {
   for (i = 0; i < details.responseHeaders.length; i++) {
     if (['content-security-policy',
