@@ -1,3 +1,11 @@
+//----------------//
+// Support Chrome //
+//----------------//
+// Firefox uses "browser" while Chrome uses "chrome"
+if (typeof browser === "undefined") {
+  browser = chrome;
+}
+
 //-------------//
 // Track Usage //
 //-------------//
@@ -11,13 +19,13 @@ var track = function(button, event){
 //-------------------//
 var submit = function(type, via, id, url, title){
   track(via+'_'+type);
-  chrome.tabs.sendRequest(id, {func: 'submit', url: url, title: title});
+  browser.tabs.sendMessage(id, {func: 'submit', url: url, title: title});
 };
 
 //--------------------//
 // Main Plugin Button //
 //--------------------//
-chrome.browserAction.onClicked.addListener(function(tab){
+browser.browserAction.onClicked.addListener(function(tab){
   submit('page', 'browserAction', tab.id, tab.url, tab.title);
 });
 
@@ -32,7 +40,7 @@ var contexts = [
   {type: "audio", func: function(info, tab){ submit('audio', 'contextMenu', tab.id, info.srcUrl); }}
 ];
 for(var i = 0; i < contexts.length; i++){
-  chrome.contextMenus.create({
+  browser.contextMenus.create({
     "title": "Post " + contexts[i].type + " to Reading",
     "contexts": [contexts[i].type],
     "onclick": contexts[i].func
@@ -42,8 +50,7 @@ for(var i = 0; i < contexts.length; i++){
 //------------//
 // CSP Bypass //
 //------------//
-// https://www.planbox.com/blog/development/coding/bypassing-githubs-content-security-policy-chrome-extension.html
-chrome.webRequest.onHeadersReceived.addListener(function(details) {
+browser.webRequest.onHeadersReceived.addListener(function(details) {
   for (i = 0; i < details.responseHeaders.length; i++) {
     if (['content-security-policy',
          'x-content-security-policy',
