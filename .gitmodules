@@ -1,9 +1,6 @@
-[submodule "chrome/shared"]
-	path = chrome/shared
-	url = git@github.com:leppert/reading-extensions-shared.git
-[submodule "firefox/data/shared"]
-	path = firefox/data/shared
-	url = git@github.com:leppert/reading-extensions-shared.git
 [submodule "reading.safariextension/shared"]
 	path = reading.safariextension/shared
+	url = git@github.com:leppert/reading-extensions-shared.git
+[submodule "chrome_and_firefox/shared"]
+	path = chrome_and_firefox/shared
 	url = git@github.com:leppert/reading-extensions-shared.git
