@@ -8,6 +8,12 @@
     "48": "shared/icon48.png",
     "128":"shared/icon128.png"
   },
+  "applications": {
+    "gecko": {
+      "id": "gecko@reading.am",
+      "update_url": "https://s3.amazonaws.com/media.reading.am/extensions/updates.json"
+    }
+  },
   "background": {
     "page": "shared/background.html"
   },
